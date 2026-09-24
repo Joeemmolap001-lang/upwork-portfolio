@@ -3,7 +3,7 @@
 Merge the per-category problem files in research/problems/*.json into the
 final deliverables:
 
-    research/1000-everyday-problems.md   grouped by general / specialized category
+    research/everyday-problems.md   grouped by general / specialized category
     research/problems.csv                flat, filterable
     research/problems.json               flat, with ids (for later tooling)
 
@@ -158,7 +158,7 @@ def build(kept, cat_meta, out_md, out_csv, out_json):
     special = [s for s in ordered_slugs if s not in general]
 
     lines = []
-    lines.append("# 1,000 everyday problems an app could solve\n")
+    lines.append(f"# {len(flat):,} everyday problems an app could solve\n")
     lines.append(
         f"{len(flat)} distinct problems across {len(ordered_slugs)} categories: "
         f"{len(general)} general-life categories first, then {len(special)} specialized ones.\n"
@@ -245,11 +245,11 @@ def main():
 
     flat, by_cat, src = build(
         kept, cat_meta,
-        os.path.join(HERE, "1000-everyday-problems.md"),
+        os.path.join(HERE, "everyday-problems.md"),
         os.path.join(HERE, "problems.csv"),
         os.path.join(HERE, "problems.json"),
     )
-    print(f"wrote {len(flat)} problems to 1000-everyday-problems.md, problems.csv, problems.json")
+    print(f"wrote {len(flat)} problems to everyday-problems.md, problems.csv, problems.json")
 
 
 if __name__ == "__main__":
