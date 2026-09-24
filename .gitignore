@@ -1,0 +1,22 @@
+# Raw research dumps (large, contain usernames) – keep out of the repo
+research/raw/
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+.vercel/
+*.log
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc

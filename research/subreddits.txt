@@ -1,0 +1,336 @@
+# Subreddits to sweep for everyday problems an app could solve.
+# One per line. Lines starting with # are comments.
+# Format:  name [| flags]
+#   flags (comma separated):
+#     search-only   very large sub – only run keyword searches, skip /top
+#     deep          fetch extra pages of /top and comments on more threads
+#
+# ---------- App-request / idea subs (highest signal) ----------
+AppIdeas | deep
+SomebodyMakeThis | deep
+Lightbulb | deep
+CrazyIdeas
+androidapps | deep
+iosapps | deep
+apps
+software
+ProductivityApps
+Startup_Ideas
+startups
+Entrepreneur | search-only
+sweatystartups
+SaaS
+indiehackers
+microsaas
+
+# ---------- General daily life / annoyances ----------
+mildlyinfuriating | deep
+firstworldproblems
+petpeeves
+Adulting
+adultingadvice
+LifeProTips | search-only
+lifehacks
+NoStupidQuestions | search-only
+TooAfraidToAsk | search-only
+CasualConversation | search-only
+AskReddit | search-only
+Showerthoughts | search-only
+
+# ---------- Home & household ----------
+homeowners
+HomeImprovement
+CleaningTips
+declutter
+organization
+konmari
+HomeAutomation
+smarthome
+houseplants
+gardening
+lawncare
+DIY | search-only
+BeginnerWoodWorking
+Appliances
+InteriorDesign
+
+# ---------- Money ----------
+personalfinance | search-only
+Frugal
+povertyfinance
+Budget
+ynab
+CreditCards
+Insurance
+tax
+FinancialPlanning
+MiddleClassFinance
+StudentLoans
+Debt
+
+# ---------- Food & groceries ----------
+Cooking | search-only
+MealPrepSunday
+EatCheapAndHealthy
+mealprep
+Costco | search-only
+grocery
+FoodAllergies
+Celiac
+vegan | search-only
+keto | search-only
+1200isplenty
+
+# ---------- Health, fitness, sleep ----------
+Fitness | search-only
+loseit
+xxfitness
+bodyweightfitness
+running
+bicycling
+bikecommuting
+hiking
+swimming
+yoga
+sleep
+insomnia
+CPAP
+stopsmoking
+stopdrinking
+Meditation
+ChronicPain
+ChronicIllness
+diabetes
+Type1Diabetes
+migraine
+IBS
+PCOS
+Endo
+skincareaddiction
+Menopause
+
+# ---------- Mental health, habits, neurodivergence ----------
+ADHD | deep
+adhdwomen
+AutisticAdults
+dyslexia
+Anxiety
+mentalhealth
+getdisciplined
+DecidingToBeBetter
+productivity | deep
+GetMotivated
+Journaling
+Notion
+ObsidianMD
+
+# ---------- Relationships, family, parenting ----------
+Parenting | deep
+daddit
+Mommit
+NewParents
+beyondthebump
+toddlers
+BabyBumps
+pregnant
+SingleParents
+coparenting
+stepparents
+Nanny
+ECEProfessionals
+homeschool
+relationship_advice | search-only
+dating_advice
+dating
+weddingplanning
+Weddingsunder10k
+EventPlanning
+LongDistance
+polyamory | search-only
+
+# ---------- Pets ----------
+dogs
+cats
+pets
+Dogtraining
+puppy101
+Aquariums
+horses
+PetSitting
+Veterinary
+
+# ---------- Housing: renting, roommates, moving ----------
+Renters
+badroommates
+roommates
+moving
+firsttimehomebuyer
+Landlord
+PropertyManagement
+airbnb_hosts
+HOA
+vandwellers
+
+# ---------- Commuting, cars, transport ----------
+cars | search-only
+MechanicAdvice
+driving
+transit
+publictransit
+uberdrivers
+doordash_drivers
+Truckers
+motorcycles | search-only
+electricvehicles | search-only
+Parking
+
+# ---------- Shopping & consumer ----------
+BuyItForLife | search-only
+Flipping
+Amazon | search-only
+assholedesign
+CrappyDesign | search-only
+Scams
+subscriptions
+Ebay
+poshmark
+EtsySellers
+ecommerce
+shopify
+dropship
+
+# ---------- Work, careers, job hunting ----------
+jobs
+careerguidance
+recruitinghell | deep
+antiwork | search-only
+WorkReform | search-only
+work
+remotework
+digitalnomad
+freelance | deep
+Upwork
+Fiverr
+smallbusiness | deep
+sales
+CustomerService
+callcentres
+TalesFromRetail
+TalesFromYourServer
+Serverlife
+TalesFromTheFrontDesk
+KitchenConfidential
+Chefit
+foodtrucks
+Barber
+Hairstylist
+Nails
+massage
+personaltraining
+gymowners
+PhysicalTherapy
+nursing | deep
+Nurse
+medicalschool
+Residency
+EMS
+pharmacy
+dentistry
+optometry
+therapists
+socialwork
+Teachers | deep
+Professors
+ScienceTeachers
+Accounting
+Bookkeeping
+paralegal
+realtors
+Construction
+Contractor
+electricians
+Plumbing
+HVAC
+Landscaping
+housekeeping
+cleaningbusiness
+logistics
+supplychain
+warehouse
+Farming
+homestead
+nonprofit
+volunteer
+churchtech
+photography | search-only
+WeddingPhotography
+videography
+NewTubers
+ContentCreators
+Twitch | search-only
+podcasting
+WeAreTheMusicMakers
+musicians
+ArtistLounge
+sewing
+knitting
+Etsy
+
+# ---------- Students & learning ----------
+college | deep
+ApplyingToCollege | search-only
+GradSchool
+studytips
+GetStudying
+languagelearning
+Anki
+learnprogramming | search-only
+books | search-only
+
+# ---------- Travel ----------
+travel | search-only
+solotravel
+onebag
+digitalnomad
+camping
+roadtrip
+Flights
+awardtravel
+
+# ---------- Caregiving, seniors, accessibility ----------
+AgingParents | deep
+CaregiverSupport
+dementia
+Alzheimers
+eldercare
+retirement
+AskOldPeople | search-only
+Blind
+deaf
+hardofhearing
+disability
+wheelchairs
+Assistance
+
+# ---------- Community, local, sustainability, misc ----------
+ZeroWaste
+sustainability
+Recycling
+composting
+immigration
+expats
+IWantOut
+TEFL
+Genealogy
+boardgames
+DnD | search-only
+lfg
+golf
+pickleball
+tennis
+climbing
+Bowling
+youthsports
+CoachingYouthSports
+scouts
+GriefSupport | search-only
