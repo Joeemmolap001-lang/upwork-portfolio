@@ -27,7 +27,7 @@ from collections import Counter, defaultdict
 HERE = os.path.dirname(os.path.abspath(__file__))
 PROBLEMS_DIR = os.path.join(HERE, "problems")
 CATEGORIES = os.path.join(HERE, "categories.json")
-THRESHOLD = 0.55
+THRESHOLD = 0.45
 
 STOP = set("""a an the and or of to in on for with at by from is are be been it its this that
 these those i you we they he she my your our their his her me us them as if then than so
@@ -125,7 +125,7 @@ def dedupe(items):
         dup_of = None
         for k in kept:
             # title-level near match, or strong body overlap
-            if jaccard(it["_title_tok"], k["_title_tok"]) >= 0.75 or jaccard(it["_tok"], k["_tok"]) >= THRESHOLD:
+            if jaccard(it["_title_tok"], k["_title_tok"]) >= 0.7 or jaccard(it["_tok"], k["_tok"]) >= THRESHOLD:
                 dup_of = k
                 break
         if dup_of is not None:
