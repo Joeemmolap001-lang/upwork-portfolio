@@ -18,6 +18,7 @@ Outputs (in --out, default research/raw):
     sweep.log        progress log
 """
 import argparse
+import base64
 import json
 import os
 import random
@@ -28,8 +29,17 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-BASE = "https://old.reddit.com"
+BASE_ANON = "https://old.reddit.com"
+BASE_OAUTH = "https://oauth.reddit.com"
+TOKEN_URL = "https://www.reddit.com/api/v1/access_token"
 UA = "linux:upwork-portfolio-research:v0.1 (personal research script; contact via GitHub)"
+
+# Reddit blocks anonymous requests from cloud IPs. With a registered "script" app
+# (https://www.reddit.com/prefs/apps) set REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET
+# and the collector uses the official OAuth API (app-only, read-only; no password needed).
+CLIENT_ID = os.environ.get("REDDIT_CLIENT_ID", "").strip()
+CLIENT_SECRET = os.environ.get("REDDIT_CLIENT_SECRET", "").strip()
+USE_OAUTH = bool(CLIENT_ID and CLIENT_SECRET)
 
 # Keyword searches run inside each subreddit. old.reddit search understands OR / quotes.
 SEARCH_QUERIES = [
@@ -74,16 +84,45 @@ class Client:
         self.out_dir = out_dir
         self.requests = 0
         self.last = 0.0
+        self.base = BASE_OAUTH if USE_OAUTH else BASE_ANON
+        self.token = None
+        self.token_expires = 0.0
+
+    def _ensure_token(self):
+        if not USE_OAUTH or (self.token and time.time() < self.token_expires - 120):
+            return
+        creds = base64.b64encode(f"{CLIENT_ID}:{CLIENT_SECRET}".encode()).decode()
+        body = urllib.parse.urlencode({"grant_type": "client_credentials"}).encode()
+        req = urllib.request.Request(
+            TOKEN_URL, data=body, method="POST",
+            headers={"User-Agent": UA, "Authorization": f"Basic {creds}"},
+        )
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            tok = json.loads(resp.read().decode("utf-8"))
+        if "access_token" not in tok:
+            raise RuntimeError(f"token request failed: {tok}")
+        self.token = tok["access_token"]
+        self.token_expires = time.time() + float(tok.get("expires_in", 3600))
+        log(self.out_dir, "obtained OAuth token")
 
     def get(self, path, params=None, max_tries=5):
-        url = BASE + path
+        url = self.base + path
         if params:
             url += "?" + urllib.parse.urlencode(params)
         for attempt in range(1, max_tries + 1):
             wait = self.delay - (time.time() - self.last)
             if wait > 0:
                 time.sleep(wait + random.uniform(0, 1.0))
-            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": "application/json"})
+            headers = {"User-Agent": UA, "Accept": "application/json"}
+            if USE_OAUTH:
+                try:
+                    self._ensure_token()
+                except Exception as e:  # noqa: BLE001
+                    log(self.out_dir, f"OAuth token error: {e}")
+                    time.sleep(15 * attempt)
+                    continue
+                headers["Authorization"] = f"bearer {self.token}"
+            req = urllib.request.Request(url, headers=headers)
             try:
                 with urllib.request.urlopen(req, timeout=30) as resp:
                     self.last = time.time()
@@ -105,6 +144,10 @@ class Client:
                     sleep_for = float(retry) if retry and retry.isdigit() else 60 * attempt
                     log(self.out_dir, f"429 on {url} – sleeping {sleep_for:.0f}s (attempt {attempt})")
                     time.sleep(sleep_for)
+                    continue
+                if e.code == 401 and USE_OAUTH:
+                    log(self.out_dir, "401 – refreshing OAuth token")
+                    self.token = None
                     continue
                 if e.code in (403, 401):
                     body = ""
@@ -305,7 +348,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--subs", default=os.path.join(os.path.dirname(__file__), "subreddits.txt"))
     ap.add_argument("--out", default=os.path.join(os.path.dirname(__file__), "raw"))
-    ap.add_argument("--delay", type=float, default=6.0, help="seconds between requests")
+    ap.add_argument("--delay", type=float, default=None,
+                    help="seconds between requests (default 1.0 with OAuth, 6.0 anonymous)")
     ap.add_argument("--pages", type=int, default=1, help="pages of 100 for /top per subreddit")
     ap.add_argument("--deep-pages", type=int, default=3, help="pages for subs flagged 'deep'")
     ap.add_argument("--comments", action="store_true", help="also fetch comments on promising threads")
@@ -316,7 +360,10 @@ def main():
     args = ap.parse_args()
 
     os.makedirs(args.out, exist_ok=True)
+    if args.delay is None:
+        args.delay = 1.0 if USE_OAUTH else 6.0
     client = Client(args.delay, args.out)
+    log(args.out, f"mode: {'OAuth (oauth.reddit.com)' if USE_OAUTH else 'anonymous (old.reddit.com)'}, delay {args.delay}s")
 
     if args.probe:
         data = client.get("/r/AppIdeas/top.json", {"t": "year", "limit": 3}, max_tries=1)

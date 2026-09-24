@@ -36,9 +36,20 @@ python3 research/reddit_sweep.py --only AppIdeas,SomebodyMakeThis --pages 1
 The collector is resumable: `raw/state.json` records what is done, so a
 stopped run continues where it left off.
 
-## Network requirement
+## Requirements
 
-The Claude Code cloud environment must allow outbound access to
-`old.reddit.com` and `www.reddit.com` (Edit the environment → Network access).
-Reddit also blocks Anthropic's built-in web fetcher, so the script runs from
-the container itself.
+1. **Network** – the Claude Code cloud environment must allow outbound access to
+   `www.reddit.com` and `oauth.reddit.com` (Edit the environment → Network
+   access). Reddit blocks Anthropic's built-in web fetcher, so the script runs
+   from the container itself.
+2. **Reddit API credentials** – Reddit refuses anonymous requests from cloud
+   servers, so the collector uses the official OAuth API. Create a free app at
+   https://www.reddit.com/prefs/apps (type *script*, any name, redirect URI
+   `http://localhost:8080`), then store the two values as environment
+   variables in the same environment settings:
+   - `REDDIT_CLIENT_ID` – the short string under the app name
+   - `REDDIT_CLIENT_SECRET` – the "secret" field
+
+   The collector uses app-only auth (read-only public data); no Reddit
+   password is needed. Without these variables it falls back to anonymous
+   `old.reddit.com`, which works from a home connection but not from the cloud.
